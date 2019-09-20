@@ -15,7 +15,7 @@ pipeline {
         timestamps()
     }
     tools {
-       jdk 'oracle-java8u162-jdk'
+       jdk 'oracle-java8u202-jdk'
        maven 'apache-maven-3.5.0'
     }
     triggers {
