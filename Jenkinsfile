@@ -27,13 +27,6 @@ pipeline {
     }
 
     stages {
-        stage('Initialise PR') {
-            when { changeRequest() }
-            steps {
-                // We need to reset the SonarQube status in the beginning
-                githubNotify(status: 'PENDING', context: 'sonarqube', description: 'Not analysed')
-            }
-        }
 
         stage('Clone') {
             steps {
@@ -62,7 +55,7 @@ pipeline {
         stage('Deploy') {
             environment {
                IMAGE_VERSION = "${env.CHANGE_ID ? 'ghprb-' : ''}${env.GIT_COMMIT}"
-               IMAGE = "docker.tradeshift.net/tradeshift-kafka-connect-jdbc:$IMAGE_VERSION"
+               IMAGE = "eu.gcr.io/tradeshift-base/tradeshift-kafka-connect-jdbc:$IMAGE_VERSION"
             }
             steps {
                 sh 'mvn clean package -DskipTests && docker build -t $IMAGE . && docker push $IMAGE'
